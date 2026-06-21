@@ -1,0 +1,28 @@
+# Dependencies / build output
+node_modules/
+dist/
+dist-ssr/
+*.local
+
+# Python
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*.sqlite3
+
+# Secrets / env (keep *.env.example)
+.env
+*/.env
+**/.env
+
+# Solidity / Hardhat
+contracts/artifacts/
+contracts/cache/
+contracts/typechain-types/
+
+# Packaging / misc
+*.zip
+*.bundle
+.DS_Store
+*.log

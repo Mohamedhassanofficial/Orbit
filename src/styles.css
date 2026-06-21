@@ -1,0 +1,67 @@
+/* ===== ORBIT global styles =====
+   Resets, base background and the four keyframe animations carried over
+   verbatim from the ORBIT.dc.html design. Per-element visual styling lives
+   inline in the components (a faithful 1:1 port of the design); hover/focus
+   states are handled by the <Interactive> helper. */
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: #03100d;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+::selection {
+  background: rgba(31, 224, 168, 0.3);
+  color: #eafff8;
+}
+
+input::placeholder {
+  color: #4f6f66;
+}
+
+input:focus {
+  outline: none;
+}
+
+@keyframes orbSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes orbSpinRev {
+  to {
+    transform: rotate(-360deg);
+  }
+}
+
+@keyframes auroraDrift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+    opacity: 0.45;
+  }
+  50% {
+    transform: translate3d(5%, -4%, 0) scale(1.15);
+    opacity: 0.7;
+  }
+}
+
+@keyframes floaty {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-12px);
+  }
+}

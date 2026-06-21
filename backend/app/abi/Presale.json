@@ -1,0 +1,12 @@
+[
+  {
+    "anonymous": false,
+    "inputs": [
+      { "indexed": true, "internalType": "address", "name": "buyer", "type": "address" },
+      { "indexed": false, "internalType": "uint256", "name": "bnbIn", "type": "uint256" },
+      { "indexed": false, "internalType": "uint256", "name": "tokensOut", "type": "uint256" }
+    ],
+    "name": "Contributed",
+    "type": "event"
+  }
+]
