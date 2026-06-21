@@ -1,5 +1,8 @@
 import Interactive from './Interactive'
 import Logo from './Logo'
+import BnbLogo from './BnbLogo'
+import TelegramLogo from './TelegramLogo'
+import XLogo from './XLogo'
 
 const chipBase = {
   fontFamily: "'JetBrains Mono',monospace",
@@ -38,12 +41,19 @@ export default function Footer({ t }) {
             </span>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
-            <span style={{ ...chipBase, color: '#7fa99e' }}>BNB Chain · BEP-20</span>
+            <span
+              style={{ ...chipBase, color: '#7fa99e', display: 'inline-flex', alignItems: 'center', gap: '6px' }}
+            >
+              <BnbLogo size={14} /> BNB Chain · BEP-20
+            </span>
             <span style={{ ...chipBase, color: '#9fc2b8' }}>{t.footerContract}</span>
             <Interactive
               as="a"
               href="#"
               style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '6px',
                 fontFamily: "'Space Grotesk',sans-serif",
                 fontSize: '13px',
                 color: '#9fc2b8',
@@ -51,20 +61,24 @@ export default function Footer({ t }) {
               }}
               hoverStyle={{ color: '#eafff8' }}
             >
-              Telegram
+              <TelegramLogo size={15} /> Telegram
             </Interactive>
             <Interactive
               as="a"
               href="#"
               style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '6px',
                 fontFamily: "'Space Grotesk',sans-serif",
                 fontSize: '13px',
                 color: '#9fc2b8',
                 textDecoration: 'none',
               }}
               hoverStyle={{ color: '#eafff8' }}
+              aria-label="X"
             >
-              X
+              <XLogo size={16} />
             </Interactive>
           </div>
         </div>

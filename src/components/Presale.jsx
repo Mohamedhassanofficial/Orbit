@@ -1,4 +1,5 @@
 import Interactive from './Interactive'
+import BnbLogo from './BnbLogo'
 
 const headingFamily = "'Space Grotesk','Noto Kufi Arabic','Noto Sans SC',sans-serif"
 const btnFamily = "'Space Grotesk','Noto Sans SC','Noto Kufi Arabic',sans-serif"
@@ -125,7 +126,7 @@ export default function Presale({
                       background: 'rgba(3,16,13,0.6)',
                       border: '1px solid rgba(90,217,255,0.22)',
                       borderRadius: '12px',
-                      padding: '16px 70px 16px 16px',
+                      padding: '16px 84px 16px 16px',
                     }}
                     focusStyle={{
                       borderColor: '#5ad9ff',
@@ -138,12 +139,16 @@ export default function Presale({
                       right: '16px',
                       top: '50%',
                       transform: 'translateY(-50%)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '6px',
                       fontFamily: "'Space Grotesk',sans-serif",
                       fontWeight: 600,
                       fontSize: '15px',
                       color: '#5ad9ff',
                     }}
                   >
+                    <BnbLogo size={18} />
                     BNB
                   </span>
                 </div>
