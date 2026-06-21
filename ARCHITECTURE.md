@@ -1,9 +1,10 @@
 # ORBIT ($ORB) — Architecture / الهيكل المعماري
 
-ORBIT is a **referral + staking dApp on BNB Smart Chain (BSC)**. Today the repo is
-the **frontend** (React + Vite landing page). This document describes the **target
-full-stack architecture** — how the Frontend, Backend, Smart Contracts, Blockchain
-and Database fit together as the project grows into a real dApp.
+ORBIT is a **referral + staking dApp on BNB Smart Chain (BSC)**. The repo now contains
+the **full stack** — a React + Vite frontend, a FastAPI/MySQL backend with an on-chain
+indexer and an automated referral-reward **worker**, and BEP-20 smart contracts. This
+document describes how the Frontend, Backend, Smart Contracts, Blockchain and Database
+fit together, including the automated referral pipeline (verify → 10% → 30h payout).
 
 > ORBIT هو تطبيق لامركزي للإحالة والـ staking على شبكة BNB. هذا المستند يوضح الهيكل
 > المعماري الكامل: الواجهة الأمامية + الخادم + العقود الذكية + البلوكشين + قاعدة البيانات.
@@ -15,46 +16,57 @@ and Database fit together as the project grows into a real dApp.
 ```mermaid
 flowchart TB
   subgraph Client["Frontend — React + Vite"]
-    UI["UI Components: Nav, Hero, Staking, Referral, Presale, Tokenomics"]
-    I18N["i18n (AR / EN)"]
-    WEB3["Web3 Layer: ethers.js / wagmi"]
-    WALLET["Wallet Connect: MetaMask, Trust, WalletConnect"]
+    direction TB
+    UI["UI — Nav · Hero · Dashboard · Staking · Referral · Presale"]
+    I18N["i18n — 8 languages (RTL)"]
+    WEB3["Web3 Layer — ethers v6"]
+    WALLET["Wallet — MetaMask · Trust"]
   end
-  subgraph Backend["Backend API — Python / FastAPI"]
-    REST["REST API: /users /staking /referrals /presale /leaderboard"]
-    AUTH["Auth: Wallet Signature (SIWE nonce)"]
-    INDEXER["Event Indexer: web3.py listener"]
-    CACHE["Cache: Redis (optional)"]
+  subgraph Backend["Backend — Python / FastAPI"]
+    direction TB
+    REST["REST API — /auth /users /staking /referrals /presale /leaderboard"]
+    AUTH["Auth — Wallet signature (SIWE)"]
+    INDEXER["Event Indexer — web3.py"]
+    WORKER["Referral Worker — verify purchase, 10%, 30h payout"]
+    CACHE["Cache — Redis (optional)"]
   end
   subgraph DB["Database — MySQL"]
-    TABLES["users, wallets, staking_records, referrals, presale_contributions, events_log"]
+    TABLES["users · wallets · staking_records · referrals · presale_contributions · events_log"]
   end
   subgraph Chain["BNB Smart Chain (BSC)"]
-    RPC["RPC Node / Provider (Ankr, QuickNode, public RPC)"]
+    RPC["RPC Provider — Ankr · QuickNode · public"]
     subgraph Contracts["Smart Contracts (Solidity)"]
       TOKEN["ORBIT Token (BEP-20)"]
-      STK["Staking Contract"]
-      PRE["Presale Contract"]
-      REF["Referral Contract"]
+      STK["Staking"]
+      REF["Referral"]
+      PRE["Presale"]
     end
-    SCAN["BscScan (verify / explore)"]
+    SCAN["BscScan"]
   end
-  UI --> I18N
+  UI -.-> I18N
   UI --> WEB3
   WEB3 --> WALLET
   UI -->|REST / HTTPS| REST
-  WEB3 -->|read state + write tx| RPC
-  WALLET -->|sign & send tx| RPC
   AUTH --> REST
   REST --> CACHE
-  REST --> TABLES
+  REST <-->|read / write| TABLES
+  WEB3 -->|read + signed tx| RPC
   INDEXER -->|subscribe events| RPC
-  INDEXER --> TABLES
+  INDEXER -->|store events| TABLES
+  WORKER -->|distribute reward after 30h| RPC
   RPC --> Contracts
-  TOKEN --- STK
-  TOKEN --- PRE
-  TOKEN --- REF
-  Contracts --> SCAN
+  Contracts -->|verify| SCAN
+
+  classDef fe fill:#0b2942,stroke:#3b82f6,color:#dbeafe;
+  classDef be fill:#0b2e1f,stroke:#22c55e,color:#dcfce7;
+  classDef db fill:#3a2a08,stroke:#f59e0b,color:#fef3c7;
+  classDef ch fill:#241544,stroke:#8b5cf6,color:#ede9fe;
+  classDef ct fill:#3a0f2a,stroke:#ec4899,color:#fce7f3;
+  class UI,I18N,WEB3,WALLET fe;
+  class REST,AUTH,INDEXER,WORKER,CACHE be;
+  class TABLES db;
+  class RPC,SCAN ch;
+  class TOKEN,STK,REF,PRE ct;
 ```
 
 ## Layers
